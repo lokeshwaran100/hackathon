@@ -40,9 +40,7 @@ DAO membership and voting rights
 * Checkout the smart contracts (backend code) in contracts directory
 
 ## Technologies Used
-Rust (for smart contract implementation)
-Concordium Identity Wallet
-React.js (for the frontend)
-Web3.js (for blockchain interaction)
+* Rust (for smart contract implementation)
+* React.js (for the frontend)
 
 Feel free to explore, contribute, and help us drive positive change through Karna. Together, let's make a difference in the world using the power of blockchain and humanitarianism inspired by the character of Karna.

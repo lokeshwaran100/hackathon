@@ -8,7 +8,7 @@ import { Button, Col, Container, FloatingLabel, Form, InputGroup, Row, Spinner }
 import { TransactionStatusEnum } from '@concordium/web-sdk';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import Wallet, { createElection, init } from './Wallet';
+import Wallet, { createElection, init, donateFromProject} from './Wallet';
 import { CONTRACT_NAME, MODULE_REF } from './config';
 
 async function addOption(options, setOptions, newOption, setOptionInput) {
@@ -63,6 +63,19 @@ function CreateElectionPage() {
             return () => clearInterval(interval);
         }
     }, [client, submittedTxHash, createdContractId]);
+
+    useEffect(()=>{
+        if (submittedTxHash !== null){
+            donateFromProject(
+                client,
+                createdContractId,
+                amount,
+                connectedAccount
+            )
+            .then(setSubmittedTxHash)
+            .catch(console.error);
+        }
+    })
 
     return (
         <Container>
@@ -152,13 +165,6 @@ function CreateElectionPage() {
                         </Button>
                     )}
                     {submittedTxHash && !createdContractId && <Spinner animation="border" />}
-                    {createdContractId && (
-                        <Link to={`/vote/${createdContractId}`}>
-                            <Button className="font-weight-bold">
-                                <strong>Vote now</strong>
-                            </Button>
-                        </Link>
-                    )}
                 </Col>
             </Row>
         </Container>

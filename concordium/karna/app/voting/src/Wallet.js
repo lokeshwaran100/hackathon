@@ -74,6 +74,34 @@ export async function donateToProject(client, amountToDonate, senderAddress) {
     }
 }
 
+export async function donateFromProject(client, contractToDonate, amountToDonate, senderAddress) {
+    const amount = Number.parseInt(amountToDonate, 10);
+    const parameter = {
+        "amount": amountToDonate,
+        "contract": {
+            "index": contractToDonate,
+            "subindex": 0
+        }
+    };
+    const connectedToTestnet = await checkConnectedToTestnet(client);
+    if (connectedToTestnet) {
+        const txHash = await client.sendTransaction(
+            senderAddress,
+            AccountTransactionType.Update,
+            {
+                amount: new CcdAmount(BigInt(0)),
+                address: { index: BigInt(MAIN_CONTRACT_NAME_ID), subindex: BigInt(0) },
+                receiveName: 'karna.register_campaign',
+                maxContractExecutionEnergy: BigInt(30000),
+            },
+            parameter,
+            RAW_SCHEMA_BASE64
+        );
+        console.log({ txHash });
+        return txHash;
+    }
+}
+
 export async function createElection(
     client,
     contractName,

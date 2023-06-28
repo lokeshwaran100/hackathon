@@ -8,6 +8,7 @@
 import React from 'react';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import { Alert, Button } from 'react-bootstrap';
+import { RAW_SCHEMA_BASE64, TESTNET_GENESIS_BLOCK_HASH, MAIN_CONTRACT_NAME_ID } from './config';
 import {
     AccountTransactionType,
     CcdAmount,
@@ -16,8 +17,6 @@ import {
     toBuffer,
 } from '@concordium/web-sdk';
 import moment from 'moment';
-import { RAW_SCHEMA_BASE64, TESTNET_GENESIS_BLOCK_HASH } from './config';
-
 export async function init(setConnectedAccount) {
     const client = await detectConcordiumProvider();
     // Listen for relevant events from the wallet.
@@ -55,6 +54,24 @@ async function checkConnectedToTestnet(client) {
             }
             return true;
         });
+}
+export async function donateToProject(client, amountToDonate, senderAddress) {
+    const amount = Number.parseInt(amountToDonate, 10);
+    const connectedToTestnet = await checkConnectedToTestnet(client);
+    if (connectedToTestnet) {
+        const txHash = await client.sendTransaction(
+            senderAddress,
+            AccountTransactionType.Update,
+            {
+                amount: new CcdAmount(BigInt(amountToDonate)),
+                address: { index: BigInt(MAIN_CONTRACT_NAME_ID), subindex: BigInt(0) },
+                receiveName: 'karna.donate',
+                maxContractExecutionEnergy: BigInt(30000),
+            }
+        );
+        console.log({ txHash });
+        return txHash;
+    }
 }
 
 export async function createElection(

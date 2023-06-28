@@ -8,3 +8,5 @@ export const BASE_URL = 'http://localhost:3000/';
 export const REFRESH_INTERVAL = moment.duration(10, 'seconds');
 // The TESTNET_GENESIS_BLOCK_HASH is used to check that the user has its browser wallet connected to testnet and not to mainnet.
 export const TESTNET_GENESIS_BLOCK_HASH = '4221332d34e1694168c2a0c0b3fd0f273809612cb13d000d5c2e00e85f50f796';
+export const MAIN_CONTRACT_NAME_ID = '5122';
+export const MAIN_RAW_SCHEMA_BASE64 = '//8DAQAAAAUAAABrYXJuYQADAAAABgAAAGRvbmF0ZQMVAwAAABAAAABQYXJzZVBhcmFtc0Vycm9yAhcAAABOb25Db250cmFjdEFkZHJlc3NFcnJvcgIRAAAAVW5hdXRob3JpemVkRXJyb3ICEQAAAHJlZ2lzdGVyX2NhbXBhaWduBBQAAgAAAAgAAABjb250cmFjdAwGAAAAYW1vdW50ChUDAAAAEAAAAFBhcnNlUGFyYW1zRXJyb3ICFwAAAE5vbkNvbnRyYWN0QWRkcmVzc0Vycm9yAhEAAABVbmF1dGhvcml6ZWRFcnJvcgIEAAAAdmlldwEKAA==';

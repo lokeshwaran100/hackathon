@@ -9,7 +9,7 @@ import { decodeView } from './buffer';
 
 function VotePage() {
     const params = useParams();
-    const { electionId } = {'electionId': '5179'};
+    const { electionId } = params;
 
     const [client, setClient] = useState();
     const [connectedAccount, setConnectedAccount] = useState();

@@ -6,16 +6,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, FloatingLabel, Form, InputGroup, Row, Spinner } from 'react-bootstrap';
 import { TransactionStatusEnum } from '@concordium/web-sdk';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import Wallet, { createElection, init, donateFromProject} from './Wallet';
 import { CONTRACT_NAME, MODULE_REF } from './config';
 
-function CreateElectionPage() {
+function CreateCampaign() {
     const [amount, setAmount] = useState('');
+    const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [options, setOptions] = useState([]);
     const [optionInput, setOptionInput] = useState('');
+    const navigate = useNavigate;
 
     const [client, setClient] = useState();
     const [connectedAccount, setConnectedAccount] = useState();
@@ -68,8 +70,17 @@ function CreateElectionPage() {
             <br />
             <Row>
                 <Col>
+                <h2>Name</h2>
+                    <FloatingLabel label="Enter Name of the Campaign.">
+                        <Form.Control
+                            as="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </FloatingLabel>
+
                     <h2>Description</h2>
-                    <FloatingLabel label="Enter description of election.">
+                    <FloatingLabel label="Enter description of Campaign.">
                         <Form.Control
                             as="textarea"
                             style={{ height: '100px' }}
@@ -108,20 +119,22 @@ function CreateElectionPage() {
                 </Col>
                 { createdContractId &&
                     <button className='btn btn-primary mt-3' onClick={()=>
-                        donateFromProject(
+                        {donateFromProject(
                         client,
                         createdContractId,
                         amount,
                         connectedAccount
                     )
                     .then(setSubmittedTxHash)
-                    .catch(console.error)}>
+                    .catch(console.error);
+                    navigate('/')}}>
                         Donate Now
                     </button>
                 }
+
             </Row>
         </Container>
     );
 }
 
-export default CreateElectionPage;
+export default CreateCampaign;

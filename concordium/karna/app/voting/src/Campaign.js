@@ -6,10 +6,19 @@ import { useParams, Link } from 'react-router-dom';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Wallet, { castVote, init, claimAmount, getView } from './Wallet';
 import { decodeView } from './buffer';
+import {campaigns} from './data'
 
-function VotePage() {
+function Campaign() {
+    
+
     const params = useParams();
-    const { electionId } = params;
+    const { cmpId } = params;
+
+    function findCampaignById(id) {
+        return campaigns.find(campaign => campaign.id === id);
+    }
+    
+    const choiseCampaign = findCampaignById((cmpId));
 
     const [client, setClient] = useState();
     const [connectedAccount, setConnectedAccount] = useState();
@@ -26,9 +35,9 @@ function VotePage() {
     // // Attempt to get general information about the election.
     // useEffect(() => {
     //     if (client) {
-    //         getView(client, electionId).then(setView).catch(console.error);
+    //         getView(client, cmpId).then(setView).catch(console.error);
     //     }
-    // }, [client, electionId]);
+    // }, [client, cmpId]);
 
     // // Decode general information about the election.
     // const viewResult = useMemo(() => {
@@ -38,7 +47,7 @@ function VotePage() {
     // }, [view]);
 
     return (
-        <Container>
+        <Container style={{maxWidth:'40rem'}}>
             <Row>
                 <Col>
                     <Wallet
@@ -50,7 +59,10 @@ function VotePage() {
             </Row>
             <Row>
                 <Col>
-                    <h1>Vote in Election {electionId}*</h1>
+                    <p>Campaign</p>
+                    <h1>{choiseCampaign.name}</h1>
+                    <br/>
+                    <p>{choiseCampaign.desc}</p>
                 </Col>
             </Row>
             <Row>
@@ -61,16 +73,19 @@ function VotePage() {
             <Row>
                 <Col>
                     <Form>
+                        
+                    <br/>
                         <h2>Donation Amount</h2>
                         <Form.Control
                         placeholder="Enter amount to donate."
                         value={amountToDonate}
                         onChange={(e) => setAmountToDonate(e.target.value)}
                         />
+                        <br/>
                         <Button
                             className="w-100"
                             onClick={() =>
-                                castVote(client, electionId, amountToDonate, connectedAccount)
+                                castVote(client, cmpId, amountToDonate, connectedAccount)
                             }
                         >
                             <strong>Donate!</strong>
@@ -79,6 +94,8 @@ function VotePage() {
                     <ul />
                 </Col>
             </Row>
+                        <br/>
+                        <br/>
             <Row>
                 <Col>
                     <Form>
@@ -88,10 +105,11 @@ function VotePage() {
                         value={amountToClaim}
                         onChange={(e) => setAmountToClaim(e.target.value)}
                         />
+                        <br/>
                         <Button
                             className="w-100"
                             onClick={() =>
-                                claimAmount(client, electionId, amountToClaim, connectedAccount)
+                                claimAmount(client, cmpId, amountToClaim, connectedAccount)
                             }
                         >
                             <strong>Claim!</strong>
@@ -100,24 +118,14 @@ function VotePage() {
                     <ul />
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <Link to={`/results/${electionId}`}>
-                        <Button className="btn-secondary font-weight-bold">
-                            <strong>Results</strong>
-                        </Button>
-                    </Link>
-                </Col>
-            </Row>
             <br />
             <br />
             <br />
             <br />
             <footer>
-                <p>*Smart contract index on the Concordium chain</p>
             </footer>
         </Container>
     );
 }
 
-export default VotePage;
+export default Campaign;

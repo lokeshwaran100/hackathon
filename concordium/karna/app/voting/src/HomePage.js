@@ -102,7 +102,7 @@ function HomePage() {
                 </button>
             </div>
 
-                <div style={{ marginLeft:'auto', marginRight:'auto', padding:'15px', position:'fixed', top:'18px', right:'18px', zIndex:'99999', paddingLeft:'5rem', paddingRight:'5rem'}} className="text-center mt-5">
+                <div style={{ marginLeft:'auto', marginRight:'auto', padding:'15px', position:'absolute', top:'18px', right:'18px', zIndex:'99999', paddingLeft:'5rem', paddingRight:'5rem'}} className="text-center mt-5">
                     <Link to="/create">
                         <Button className="btn bg-success text-white font-weight-bold py-3 px-4">
                             <strong>Create Campaign</strong>
@@ -115,7 +115,7 @@ function HomePage() {
                 <div id='campaigns' style={{ marginTop:'25px', marginLeft:'auto', marginRight:'auto', display:'flex', flexWrap:'wrap', gap:'15px', justifyContent:'center'}}>
                     {
                         campaigns.map((card) => (
-                        <Link to={`/vote/${card.id}`}  key={card.id}>
+                        <Link to={`/campaign/${card.id}`}  key={card.id}>
                             <Card style={{maxWidth:'30rem'}} className='p-2'>
                                 <Card.Img variant="top" style={{height:'200px', objectFit:'cover'}} src={`https://picsum.photos/800/500?${card.id}`} />
                                 <Card.Body>

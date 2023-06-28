@@ -95,9 +95,6 @@ function CreateElectionPage() {
                         <Button
                             className="w-100"
                             onClick={() => {
-                                if (options.length === 0) {
-                                    alert('Add at least one option!');
-                                } else {
                                     createElection(
                                         client,
                                         CONTRACT_NAME,
@@ -109,7 +106,6 @@ function CreateElectionPage() {
                                     )
                                         .then(setSubmittedTxHash)
                                         .catch(console.error);
-                                }
                             }}
                         >
                             Create Campaign
@@ -118,7 +114,7 @@ function CreateElectionPage() {
                     {submittedTxHash && !createdContractId && <Spinner animation="border" />}
                 </Col>
                 { submittedTxHash &&
-                    <button onClick={()=>
+                    <button className='btn btn-primary mt-3' onClick={()=>
                         donateFromProject(
                         client,
                         createdContractId,

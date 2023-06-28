@@ -84,12 +84,6 @@ function CreateElectionPage() {
                     onChange={(e) => setAmount(e.target.value)}
                     />
                     <br />
-                    <h2>Options</h2>
-                    <ul>
-                        {options?.map((opt) => (
-                            <li key={opt}>{opt}</li>
-                        ))}
-                    </ul>
                     <br />
                     {!submittedTxHash && connectedAccount && (
                         <Button
@@ -99,7 +93,6 @@ function CreateElectionPage() {
                                         client,
                                         CONTRACT_NAME,
                                         description,
-                                        options,
                                         amount,
                                         MODULE_REF,
                                         connectedAccount
@@ -113,7 +106,7 @@ function CreateElectionPage() {
                     )}
                     {submittedTxHash && !createdContractId && <Spinner animation="border" />}
                 </Col>
-                { submittedTxHash &&
+                { createdContractId &&
                     <button className='btn btn-primary mt-3' onClick={()=>
                         donateFromProject(
                         client,

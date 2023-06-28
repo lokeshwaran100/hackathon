@@ -8,7 +8,7 @@
 import React from 'react';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import { Alert, Button } from 'react-bootstrap';
-import { RAW_SCHEMA_BASE64, TESTNET_GENESIS_BLOCK_HASH, MAIN_CONTRACT_NAME_ID } from './config';
+import { RAW_SCHEMA_BASE64, TESTNET_GENESIS_BLOCK_HASH, MAIN_CONTRACT_NAME_ID, MAIN_RAW_SCHEMA_BASE64 } from './config';
 import {
     AccountTransactionType,
     CcdAmount,
@@ -76,10 +76,11 @@ export async function donateToProject(client, amountToDonate, senderAddress) {
 
 export async function donateFromProject(client, contractToDonate, amountToDonate, senderAddress) {
     const amount = Number.parseInt(amountToDonate, 10);
+    const contract = Number.parseInt(contractToDonate, 10);
     const parameter = {
         "amount": amountToDonate,
         "contract": {
-            "index": contractToDonate,
+            "index": contract,
             "subindex": 0
         }
     };
@@ -95,7 +96,7 @@ export async function donateFromProject(client, contractToDonate, amountToDonate
                 maxContractExecutionEnergy: BigInt(30000),
             },
             parameter,
-            RAW_SCHEMA_BASE64
+            MAIN_RAW_SCHEMA_BASE64
         );
         console.log({ txHash });
         return txHash;
@@ -106,7 +107,6 @@ export async function createElection(
     client,
     contractName,
     description,
-    options,
     amount,
     moduleRef,
     senderAddress

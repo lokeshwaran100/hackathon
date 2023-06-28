@@ -11,16 +11,6 @@ import moment from 'moment';
 import Wallet, { createElection, init, donateFromProject} from './Wallet';
 import { CONTRACT_NAME, MODULE_REF } from './config';
 
-async function addOption(options, setOptions, newOption, setOptionInput) {
-    if (options.includes(newOption)) {
-        throw new Error(`duplicate option ${newOption}`);
-    }
-    if (newOption) {
-        setOptions([...options, newOption]);
-        setOptionInput('');
-    }
-}
-
 function CreateElectionPage() {
     const [amount, setAmount] = useState('');
     const [description, setDescription] = useState('');
@@ -64,19 +54,6 @@ function CreateElectionPage() {
         }
     }, [client, submittedTxHash, createdContractId]);
 
-    useEffect(()=>{
-        if (submittedTxHash !== null){
-            donateFromProject(
-                client,
-                createdContractId,
-                amount,
-                connectedAccount
-            )
-            .then(setSubmittedTxHash)
-            .catch(console.error);
-        }
-    })
-
     return (
         <Container>
             <Row>
@@ -113,32 +90,6 @@ function CreateElectionPage() {
                             <li key={opt}>{opt}</li>
                         ))}
                     </ul>
-                    <Form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            addOption(options, setOptions, optionInput, setOptionInput).catch(console.error);
-                        }}
-                    >
-                        <Row>
-                            <Col sm={10}>
-                                <InputGroup className="mb-3">
-                                    <Form.Control
-                                        placeholder="Option"
-                                        value={optionInput}
-                                        onChange={(e) => setOptionInput(e.target.value)}
-                                    />
-                                    <Button type="submit" variant="outline-secondary">
-                                        Add
-                                    </Button>
-                                </InputGroup>
-                            </Col>
-                            <Col sm={1}>
-                                <Button type="text" variant="outline-secondary" onClick={() => setOptions([])}>
-                                    Clear
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Form>
                     <br />
                     {!submittedTxHash && connectedAccount && (
                         <Button
@@ -166,6 +117,19 @@ function CreateElectionPage() {
                     )}
                     {submittedTxHash && !createdContractId && <Spinner animation="border" />}
                 </Col>
+                { submittedTxHash &&
+                    <button onClick={()=>
+                        donateFromProject(
+                        client,
+                        createdContractId,
+                        amount,
+                        connectedAccount
+                    )
+                    .then(setSubmittedTxHash)
+                    .catch(console.error)}>
+                        Donate Now
+                    </button>
+                }
             </Row>
         </Container>
     );
